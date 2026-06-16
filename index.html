@@ -243,7 +243,9 @@ function result(){
   const L = LEVELS[level];
   const nextL = level<5?LEVELS[level+1]:null;
   const bench = Math.min(96, Math.max(8, Math.round(((mean-1)/4)*100)));
-  if(!_done){ _done=true; track('complete', {level:''+level, name:L.name, bottleneck:lowLabel, pct:''+bench}); }
+  if(!_done){ _done=true; track('complete', {level:''+level, name:L.name, bottleneck:lowLabel, pct:''+bench,
+      strategy:dimScore.strategy.toFixed(1), champions:dimScore.champions.toFixed(1), access:dimScore.access.toFixed(1),
+      workflows:dimScore.workflows.toFixed(1), governance:dimScore.governance.toFixed(1), answers:answers.join('')}); }
   const movesHead = level<5?`Your 3 moves to Level ${level+1} — ${nextL.name}`:'Three moves to widen the moat';
 
   const radar = buildRadar(dimScore, low);

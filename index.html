@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Operating Scorecard — Sapiera</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#182852; --white:#fff; --gold:#E5B53D; --gold-bright:#F0C547;
+    --bg:#eef0f5; --card:#fff;
+    --navy-muted:rgba(24,40,82,0.72); --navy-faint:rgba(24,40,82,0.42);
+    --line:rgba(24,40,82,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Inter',-apple-system,Arial,sans-serif;color:var(--navy);-webkit-font-smoothing:antialiased;padding:24px 14px;}
+  .wrap{max-width:660px;margin:0 auto;}
+  .card{background:var(--card);border-radius:18px;box-shadow:0 14px 44px rgba(24,40,82,0.13);overflow:hidden;}
+
+  /* TOP BAR */
+  .top{background:var(--navy);color:#fff;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .wm{font-size:14px;font-weight:700;letter-spacing:0.30em;}
+  .wm .d{color:var(--gold);}
+  .top .kicker{font-size:10px;font-weight:600;letter-spacing:0.22em;color:var(--white);opacity:.7;text-transform:uppercase;}
+  .progress{height:4px;background:rgba(24,40,82,0.10);}
+  .bar{height:100%;width:0;background:var(--gold);transition:width .4s cubic-bezier(.4,0,.2,1);}
+
+  .pad{padding:34px 34px 30px;}
+
+  /* INTRO */
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:0.30em;color:var(--gold);text-transform:uppercase;}
+  h1{font-size:32px;font-weight:800;line-height:1.06;margin-top:14px;letter-spacing:-0.01em;}
+  h1 .g{color:var(--gold);}
+  .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--navy-muted);margin-top:12px;}
+  .intro-p{font-size:14px;line-height:1.6;color:var(--navy-muted);margin-top:18px;}
+  .meta{display:flex;gap:22px;margin-top:22px;font-size:12px;color:var(--navy-faint);}
+  .meta b{color:var(--navy);font-weight:600;}
+  .btn{display:inline-block;background:var(--navy);color:#fff;border:none;font-family:inherit;font-size:15px;font-weight:600;padding:15px 30px;border-radius:11px;cursor:pointer;margin-top:26px;transition:transform .12s, background .2s;letter-spacing:.01em;}
+  .btn:hover{background:#0f1c3d;transform:translateY(-1px);}
+  .btn.gold{background:var(--gold);color:var(--navy);}
+  .btn.gold:hover{background:var(--gold-bright);}
+  .btn.ghost{background:transparent;color:var(--navy-muted);border:1px solid var(--line);font-weight:500;padding:13px 22px;}
+  .btn.ghost:hover{background:#f6f7fa;transform:none;}
+
+  /* QUESTION */
+  .qnum{font-size:11px;font-weight:700;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;}
+  .qtext{font-size:21px;font-weight:700;line-height:1.3;margin-top:12px;}
+  .opts{margin-top:22px;display:flex;flex-direction:column;gap:10px;}
+  .opt{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:12px;padding:15px 17px;cursor:pointer;font-size:14.5px;color:var(--navy);background:#fff;transition:all .15s;text-align:left;}
+  .opt:hover{border-color:var(--gold);background:#fffdf6;transform:translateX(2px);}
+  .opt .dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--line);flex:none;transition:all .15s;}
+  .opt:hover .dot{border-color:var(--gold);background:var(--gold);}
+  .qfoot{display:flex;justify-content:space-between;align-items:center;margin-top:24px;}
+  .back{font-size:13px;color:var(--navy-faint);cursor:pointer;background:none;border:none;font-family:inherit;}
+  .back:hover{color:var(--navy);}
+  .qcount{font-size:12px;color:var(--navy-faint);}
+
+  /* RESULT */
+  .result-hero{background:var(--navy);color:#fff;padding:34px;text-align:center;}
+  .rh-label{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;}
+  .rh-level{font-size:54px;font-weight:800;line-height:1;margin-top:10px;}
+  .rh-name{font-size:24px;font-weight:700;margin-top:6px;}
+  .rh-name .sub{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:15px;color:rgba(255,255,255,.6);margin-top:3px;}
+  .rh-state{font-size:14px;color:rgba(255,255,255,.85);max-width:440px;margin:14px auto 0;line-height:1.5;}
+  .rh-bench{font-size:12.5px;color:var(--gold);margin-top:16px;font-weight:500;}
+
+  .radar-row{display:flex;gap:24px;align-items:center;padding:30px 34px 8px;flex-wrap:wrap;}
+  .radar-box{flex:none;}
+  .radar-side{flex:1;min-width:220px;}
+  .rs-h{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--navy-faint);font-weight:700;}
+  .bottleneck{margin-top:8px;font-size:18px;font-weight:700;}
+  .bottleneck .pill{color:var(--gold);}
+  .bn-why{font-size:13.5px;color:var(--navy-muted);line-height:1.55;margin-top:8px;}
+  .dimlist{margin-top:16px;display:flex;flex-direction:column;gap:7px;}
+  .dimrow{display:flex;align-items:center;gap:10px;font-size:12.5px;}
+  .dimrow .nm{width:92px;color:var(--navy-muted);}
+  .track{flex:1;height:7px;background:rgba(24,40,82,.08);border-radius:4px;overflow:hidden;}
+  .fill{height:100%;background:var(--navy);border-radius:4px;width:0;transition:width .8s cubic-bezier(.4,0,.2,1);}
+  .dimrow.low .fill{background:var(--gold);}
+  .dimrow .vv{width:30px;text-align:right;color:var(--navy-faint);font-variant-numeric:tabular-nums;}
+
+  .section-h{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;padding:24px 34px 0;}
+  .moves{padding:14px 34px 6px;display:flex;flex-direction:column;gap:10px;}
+  .move{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:15px 17px;}
+  .move .n{font-size:13px;font-weight:800;color:var(--gold);flex:none;width:18px;}
+  .move .t{font-size:14px;line-height:1.45;}
+  .move .t b{font-weight:600;}
+
+  .help{margin:24px 34px 0;background:#f7f8fb;border:1px solid var(--line);border-radius:14px;padding:22px 22px 24px;}
+  .help-h{font-size:16px;font-weight:700;}
+  .help-h .g{color:var(--gold);}
+  .help-line{font-size:13.5px;color:var(--navy-muted);line-height:1.55;margin-top:8px;}
+  .pillars{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  .pillar{flex:1;min-width:120px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 14px;}
+  .pillar .pn{font-size:12.5px;font-weight:700;}
+  .pillar .pd{font-size:11.5px;color:var(--navy-faint);line-height:1.4;margin-top:4px;}
+
+  .cta-block{margin:24px 34px;padding:24px;background:var(--navy);border-radius:14px;color:#fff;text-align:center;}
+  .cta-block .ct{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;}
+  .cta-block .cs{font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;letter-spacing:.06em;}
+  .email{display:flex;gap:8px;margin-top:16px;max-width:400px;margin-left:auto;margin-right:auto;}
+  .email input{flex:1;border:none;border-radius:10px;padding:13px 15px;font-family:inherit;font-size:14px;}
+  .restart{text-align:center;padding:4px 0 30px;}
+  .disc{font-size:10.5px;color:var(--navy-faint);text-align:center;padding:0 34px 26px;line-height:1.5;}
+  .hidden{display:none;}
+  @media(max-width:560px){.pad{padding:26px 22px;}h1{font-size:27px;}.rh-level{font-size:46px;}.radar-row,.moves,.section-h,.help,.cta-block,.disc{padding-left:22px;padding-right:22px;}.help,.cta-block{margin-left:22px;margin-right:22px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="top"><div class="wm">SAPIERA<span class="d"> ·</span> AI</div><div class="kicker">AI Operating Scorecard</div></div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div id="screen"></div>
+  </div>
+</div>
+
+<script>
+const DIMS = [
+  {key:'strategy',  label:'Strategy'},
+  {key:'champions', label:'Champions'},
+  {key:'access',    label:'Access'},
+  {key:'workflows', label:'Workflows'},
+  {key:'governance',label:'Governance'}
+];
+
+const Q = [
+  {dim:'strategy', q:'Does your org have a written AI strategy with an executive owner?',
+   o:['No — people just experiment','We’ve talked about it, nothing written','A draft exists, loosely sponsored','Funded strategy, named exec owner','Core to our plan, reviewed vs. P&L']},
+  {dim:'strategy', q:'How does AI show up in leadership conversations?',
+   o:['Mostly as a buzzword','As a worry — “are we behind?”','As specific pilots we’re discussing','As targets our function leads own','As a moat we actively widen']},
+  {dim:'champions', q:'Who drives AI inside the company?',
+   o:['No one in particular','A couple of curious people','An emerging go-to champion','A designated Head of AI','A team of builders + agent roles']},
+  {dim:'champions', q:'How widely do people actually use AI?',
+   o:['A handful of early adopters','Uneven pockets','Most teams have someone capable','Most employees, every week','Fluency is expected and coached']},
+  {dim:'access', q:'Do employees have sanctioned AI tools?',
+   o:['No — personal accounts only','A few licenses, ad hoc','Approved tools for some teams','Company-wide, right tool per role','Built into the systems they use']},
+  {dim:'access', q:'How connected are tools to your data and systems?',
+   o:['Copy-paste only','Minimal, manual','A few read-only integrations','Connected to core systems, with guardrails','Agents act across systems, within limits']},
+  {dim:'workflows', q:'Where does AI live in your workflows today?',
+   o:['Just chat / drafting','Personal productivity only','1–2 team workflows, partly automated','Several core workflows on AI','Agentic by default, humans supervise']},
+  {dim:'workflows', q:'How many AI pilots have reached production?',
+   o:['None','Pilots run, none shipped','One or two are live','Several, across functions','We ship and retire agents routinely']},
+  {dim:'governance', q:'Do you have an AI policy and data guardrails?',
+   o:['None','Informal, verbal','A basic policy','Clear policy + access controls','Governance + monitoring (quality, drift)']},
+  {dim:'governance', q:'How AI-ready is your data?',
+   o:['Scattered — not sure','Messy, mostly manual','Some sources organized','Key data structured + accessible','Curated as an asset for AI']}
+];
+
+const LEVELS = {
+ 1:{name:'Ad-hoc', sub:'just getting started',
+    state:'AI is a personal hack a few people use. No strategy, no owner, no policy.',
+    moves:['<b>Write a one-page AI point of view</b> and share it across the company.','<b>Give every employee sanctioned access</b> to a frontier AI tool.','<b>Run a literacy + use-case session</b> so teams see what’s possible.'],
+    help:'Sapiera installs the foundation — a clear AI point of view, the right tooling, and a literacy program your teams actually use.'},
+ 2:{name:'Piloting', sub:'stuck at the POC-to-production gap',
+    state:'Tools bought, pilots running — nothing reaches production. Where most mid-market organizations get stuck.',
+    moves:['<b>Surface your real champion</b> — the person already building, found in behavior, not titles.','<b>Map one high-volume workflow</b> end-to-end and pick the steps AI can own.','<b>Ship one workflow into production</b> with a named owner and a success metric.'],
+    help:'This is our wedge: we surface the champion you didn’t know you had, map the workflow, and get the first one into production.'},
+ 3:{name:'Adopted', sub:'crossing into production',
+    state:'A few workflows now run on AI. A champion has emerged. Basic governance exists.',
+    moves:['<b>Stand up lightweight governance</b> — a usage policy plus data guardrails.','<b>Name a Head of AI</b> (even part-time) and set targets per function.','<b>Replicate the first win</b> across two more functions.'],
+    help:'We help you systematize — governance, an operating cadence, and the playbook to scale wins across functions.'},
+ 4:{name:'Operating System', sub:'systematized',
+    state:'AI is embedded across core workflows — governed, owned, and measured against the P&L.',
+    moves:['<b>Build bespoke agents</b> for your highest-value, system-specific workflows.','<b>Wire agents into core systems</b> within governed limits.','<b>Install measurement</b> — quality, drift, and ROI monitoring.'],
+    help:'We build the bespoke agents and wire them into your core systems, with measurement that proves ROI.'},
+ 5:{name:'AI-Native', sub:'the compounding advantage',
+    state:'An intelligence layer that improves itself. Agent-native roles exist. The advantage widens over time.',
+    moves:['<b>Capture decisions as institutional memory</b> the system can reuse.','<b>Staff agent-native roles</b> deliberately, not by accident.','<b>Turn the operating advantage into a market one</b> — extend it to partners or portfolio.'],
+    help:'At this level we co-build your compounding intelligence layer and extend it across partners or portfolio.'}
+};
+
+let cur = 0;                 // 0 = intro, 1..10 = questions, 11 = result
+const answers = new Array(Q.length).fill(null);
+
+// ---- lightweight per-contact tracking (open / complete / email) ----
+const CID = new URLSearchParams(location.search).get('c') || 'anon';
+const ENDPOINT = ''; // <<< PASTE your Google Apps Script web-app URL here to turn ON logging
+let _done = false;
+function track(ev, data){
+  try{
+    if(!ENDPOINT) return;
+    const p = Object.assign({c:CID, event:ev, ts:''+Date.now()}, data||{});
+    const body = new URLSearchParams(p).toString();
+    if(navigator.sendBeacon){ navigator.sendBeacon(ENDPOINT, new Blob([body],{type:'application/x-www-form-urlencoded'})); }
+    else { fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body}); }
+  }catch(e){}
+}
+const screen = document.getElementById('screen');
+const bar = document.getElementById('bar');
+
+function setBar(){ const pct = cur===0?0 : cur>Q.length?100 : (cur/(Q.length))*100; bar.style.width = pct+'%'; }
+
+function intro(){
+  screen.innerHTML = `<div class="pad">
+    <div class="eyebrow">AI Operating Maturity</div>
+    <h1>Where is your org on the <span class="g">AI Operating Curve</span>?</h1>
+    <div class="sub">Five levels from Ad-hoc to AI-Native. Three minutes to find out.</div>
+    <p class="intro-p">Most companies aren’t short on AI ambition — they’re stuck. Answer 10 quick questions and get your level, your single biggest bottleneck, and the three moves that advance you.</p>
+    <div class="meta"><div><b>10</b> questions</div><div><b>~3</b> minutes</div><div><b>5</b> dimensions</div></div>
+    <button class="btn gold" onclick="next()">Start the Scorecard →</button>
+  </div>`;
+  setBar();
+}
+
+function question(i){
+  const q = Q[i];
+  screen.innerHTML = `<div class="pad">
+    <div class="qnum">Question ${i+1} of ${Q.length} · ${DIMS.find(d=>d.key===q.dim).label}</div>
+    <div class="qtext">${q.q}</div>
+    <div class="opts" id="opts"></div>
+    <div class="qfoot">
+      <button class="back" onclick="prev()">${i===0?'':'← Back'}</button>
+      <div class="qcount">${i+1} / ${Q.length}</div>
+    </div>
+  </div>`;
+  const opts = document.getElementById('opts');
+  q.o.forEach((txt,idx)=>{
+    const b = document.createElement('button');
+    b.className='opt'; b.innerHTML = `<span class="dot"></span><span>${txt}</span>`;
+    b.onclick = ()=>{ answers[i] = idx+1; next(); };
+    opts.appendChild(b);
+  });
+  setBar();
+}
+
+function next(){ if(cur>=1 && cur<=Q.length && answers[cur-1]===null) return; cur++; route(); }
+function prev(){ if(cur>1){ cur--; route(); } }
+function route(){ if(cur===0) intro(); else if(cur<=Q.length) question(cur-1); else result(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+function result(){
+  const dimScore = {};
+  DIMS.forEach(d=>{
+    const vals = Q.map((q,i)=>q.dim===d.key?answers[i]:null).filter(v=>v!=null);
+    dimScore[d.key] = vals.reduce((a,b)=>a+b,0)/vals.length;
+  });
+  const mean = DIMS.reduce((s,d)=>s+dimScore[d.key],0)/DIMS.length;
+  let level = Math.round(mean); if(level<1)level=1; if(level>5)level=5;
+  // bottleneck = lowest dimension
+  let low = DIMS[0].key, lowV = dimScore[DIMS[0].key];
+  DIMS.forEach(d=>{ if(dimScore[d.key]<lowV){lowV=dimScore[d.key];low=d.key;} });
+  const lowLabel = DIMS.find(d=>d.key===low).label;
+  const L = LEVELS[level];
+  const nextL = level<5?LEVELS[level+1]:null;
+  const bench = Math.min(96, Math.max(8, Math.round(((mean-1)/4)*100)));
+  if(!_done){ _done=true; track('complete', {level:''+level, name:L.name, bottleneck:lowLabel, pct:''+bench}); }
+  const movesHead = level<5?`Your 3 moves to Level ${level+1} — ${nextL.name}`:'Three moves to widen the moat';
+
+  const radar = buildRadar(dimScore, low);
+  const dimBars = DIMS.map(d=>{
+    const pct = (dimScore[d.key]/5)*100;
+    return `<div class="dimrow ${d.key===low?'low':''}"><span class="nm">${d.label}</span><span class="track"><span class="fill" data-w="${pct}"></span></span><span class="vv">${dimScore[d.key].toFixed(1)}</span></div>`;
+  }).join('');
+
+  screen.innerHTML = `
+    <div class="result-hero">
+      <div class="rh-label">Your result</div>
+      <div class="rh-level">Level ${level}</div>
+      <div class="rh-name">${L.name}<span class="sub">${L.sub}</span></div>
+      <div class="rh-state">${L.state}</div>
+      <div class="rh-bench">More AI-ready than ~${bench}% of mid-market organizations*</div>
+    </div>
+
+    <div class="radar-row">
+      <div class="radar-box">${radar}</div>
+      <div class="radar-side">
+        <div class="rs-h">Your bottleneck</div>
+        <div class="bottleneck"><span class="pill">${lowLabel}</span> is holding you back</div>
+        <div class="bn-why">Your level is capped by your weakest dimension. Fixing ${lowLabel.toLowerCase()} is your fastest path up the curve.</div>
+        <div class="dimlist">${dimBars}</div>
+      </div>
+    </div>
+
+    <div class="section-h">${movesHead}</div>
+    <div class="moves">
+      ${L.moves.map((m,i)=>`<div class="move"><div class="n">${i+1}</div><div class="t">${m}</div></div>`).join('')}
+    </div>
+
+    <div class="help">
+      <div class="help-h">Where <span class="g">Sapiera</span> comes in</div>
+      <div class="help-line">${L.help}</div>
+      <div class="pillars">
+        <div class="pillar"><div class="pn">Strategic Framework</div><div class="pd">The point of view + roadmap to sequence the work.</div></div>
+        <div class="pillar"><div class="pn">Enablement</div><div class="pd">Your people, trained and coached to the next level.</div></div>
+        <div class="pillar"><div class="pn">Implementation</div><div class="pd">Agents built, wired in, and handed over.</div></div>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <div class="ct">See exactly how to move up a level.</div>
+      <div class="cs">Get your full read-out + a 20-minute debrief</div>
+      <div class="email">
+        <input type="email" placeholder="you@company.com" id="em">
+        <button class="btn gold" style="margin-top:0;padding:13px 20px" onclick="grab()">Send it</button>
+      </div>
+    </div>
+    <div class="restart"><button class="btn ghost" onclick="restart()">↺ Retake the Scorecard</button></div>
+    <div class="disc">*Benchmark is directional and will sharpen as responses accumulate. A self-assessment is a starting point — Sapiera measures true AI maturity from the actual work, not a survey.</div>
+  `;
+  setBar();
+  requestAnimationFrame(()=>{ document.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%'); animateRadar(); });
+}
+
+function buildRadar(dimScore, low){
+  const cx=95, cy=95, R=72, N=5;
+  const pt=(i,r)=>{ const a=(-90 + i*72)*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  let grid='';
+  for(let ring=1; ring<=5; ring++){
+    const pts=[]; for(let i=0;i<N;i++){const p=pt(i,(ring/5)*R);pts.push(p.join(','));}
+    grid+=`<polygon points="${pts.join(' ')}" fill="none" stroke="rgba(24,40,82,0.10)" stroke-width="1"/>`;
+  }
+  let axes=''; const labels=['Strategy','Champions','Access','Workflows','Governance'];
+  for(let i=0;i<N;i++){ const p=pt(i,R); axes+=`<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="rgba(24,40,82,0.10)" stroke-width="1"/>`;
+    const lp=pt(i,R+16); axes+=`<text x="${lp[0]}" y="${lp[1]}" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="600" fill="${labels[i]===DIMS.find(d=>d.key===low).label?'#E5B53D':'rgba(24,40,82,0.6)'}" font-family="Inter,Arial">${labels[i]}</text>`; }
+  const dpts=DIMS.map((d,i)=>pt(i,(dimScore[d.key]/5)*R).join(',')).join(' ');
+  const dots=DIMS.map((d,i)=>{const p=pt(i,(dimScore[d.key]/5)*R);return `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#182852"/>`;}).join('');
+  return `<svg width="222" height="200" viewBox="-16 -6 222 202" id="radarSvg">
+    ${grid}${axes}
+    <g id="radarShape" style="transform-origin:${cx}px ${cy}px;transform:scale(0);transition:transform .7s cubic-bezier(.2,.8,.2,1)">
+      <polygon points="${dpts}" fill="rgba(229,181,61,0.28)" stroke="#E5B53D" stroke-width="2"/>${dots}
+    </g></svg>`;
+}
+function animateRadar(){ const s=document.getElementById('radarShape'); if(s) requestAnimationFrame(()=>{ s.style.transform='scale(1)'; }); }
+
+function grab(){ const e=document.getElementById('em'); if(e && e.value && e.value.includes('@')){ track('email',{email:e.value}); e.parentElement.innerHTML='<div style="color:#fff;font-size:14px;padding:8px">Thanks — your read-out is on the way. ✓</div>'; } else if(e){ e.style.outline='2px solid #E5B53D'; } }
+function restart(){ cur=0; answers.fill(null); route(); }
+
+intro();
+track('open');
+</script>
+</body>
+</html>

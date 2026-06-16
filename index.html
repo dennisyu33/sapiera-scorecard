@@ -175,7 +175,7 @@ const answers = new Array(Q.length).fill(null);
 
 // ---- lightweight per-contact tracking (open / complete / email) ----
 const CID = new URLSearchParams(location.search).get('c') || 'anon';
-const ENDPOINT = ''; // <<< PASTE your Google Apps Script web-app URL here to turn ON logging
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwJ4_svo-nApFqK0m_Bd2etH5aZgPZglgczEiGSWBlLDPyDWSP_bKqospYvBpBInk0Pwg/exec'; // Sapiera scorecard logger (live)
 let _done = false;
 function track(ev, data){
   try{

@@ -148,23 +148,23 @@ const Q = [
 ];
 
 const LEVELS = {
- 1:{name:'Ad-hoc', sub:'just getting started',
+ 1:{name:'Curious', sub:'personal hacks, no plan',
     state:'AI is a personal hack a few people use. No strategy, no owner, no policy.',
     moves:['<b>Write a one-page AI point of view</b> and share it across the company.','<b>Give every employee sanctioned access</b> to a frontier AI tool.','<b>Run a literacy + use-case session</b> so teams see what’s possible.'],
     help:'Sapiera installs the foundation — a clear AI point of view, the right tooling, and a literacy program your teams actually use.'},
- 2:{name:'Piloting', sub:'stuck at the POC-to-production gap',
+ 2:{name:'Piloting', sub:'pilots stall, nothing ships',
     state:'Tools bought, pilots running — nothing reaches production. Where most mid-market organizations get stuck.',
     moves:['<b>Surface your real champion</b> — the person already building, found in behavior, not titles.','<b>Map one high-volume workflow</b> end-to-end and pick the steps AI can own.','<b>Ship one workflow into production</b> with a named owner and a success metric.'],
     help:'This is our wedge: we surface the champion you didn’t know you had, map the workflow, and get the first one into production.'},
- 3:{name:'Adopted', sub:'crossing into production',
+ 3:{name:'Adopting', sub:'first workflows in production',
     state:'A few workflows now run on AI. A champion has emerged. Basic governance exists.',
     moves:['<b>Stand up lightweight governance</b> — a usage policy plus data guardrails.','<b>Name a Head of AI</b> (even part-time) and set targets per function.','<b>Replicate the first win</b> across two more functions.'],
     help:'We help you systematize — governance, an operating cadence, and the playbook to scale wins across functions.'},
- 4:{name:'Operating System', sub:'systematized',
+ 4:{name:'Operating', sub:'embedded, governed, measured',
     state:'AI is embedded across core workflows — governed, owned, and measured against the P&L.',
     moves:['<b>Build bespoke agents</b> for your highest-value, system-specific workflows.','<b>Wire agents into core systems</b> within governed limits.','<b>Install measurement</b> — quality, drift, and ROI monitoring.'],
     help:'We build the bespoke agents and wire them into your core systems, with measurement that proves ROI.'},
- 5:{name:'AI-Native', sub:'the compounding advantage',
+ 5:{name:'Compounding', sub:'self-improving — a moat',
     state:'An intelligence layer that improves itself. Agent-native roles exist. The advantage widens over time.',
     moves:['<b>Capture decisions as institutional memory</b> the system can reuse.','<b>Staff agent-native roles</b> deliberately, not by accident.','<b>Turn the operating advantage into a market one</b> — extend it to partners or portfolio.'],
     help:'At this level we co-build your compounding intelligence layer and extend it across partners or portfolio.'}
@@ -202,7 +202,7 @@ function intro(){
   screen.innerHTML = `<div class="pad">
     <div class="eyebrow">AI Operating Maturity</div>
     <h1>Where is your org on the <span class="g">AI Operating Curve</span>?</h1>
-    <div class="sub">Five levels from Ad-hoc to AI-Native. Three minutes to find out.</div>
+    <div class="sub">Five stages from Curious to Compounding. Three minutes to find out.</div>
     <p class="intro-p">Most companies aren’t short on AI ambition — they’re stuck. Answer 10 quick questions and get your level, your single biggest bottleneck, and the three moves that advance you.</p>
     <div class="meta"><div><b>10</b> questions</div><div><b>~3</b> minutes</div><div><b>5</b> dimensions</div></div>
     <button class="btn gold" onclick="startQuiz()">Start the Scorecard →</button>

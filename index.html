@@ -205,7 +205,7 @@ function intro(){
     <div class="sub">Five levels from Ad-hoc to AI-Native. Three minutes to find out.</div>
     <p class="intro-p">Most companies aren’t short on AI ambition — they’re stuck. Answer 10 quick questions and get your level, your single biggest bottleneck, and the three moves that advance you.</p>
     <div class="meta"><div><b>10</b> questions</div><div><b>~3</b> minutes</div><div><b>5</b> dimensions</div></div>
-    <button class="btn gold" onclick="next()">Start the Scorecard →</button>
+    <button class="btn gold" onclick="startQuiz()">Start the Scorecard →</button>
   </div>`;
   setBar();
 }
@@ -334,8 +334,9 @@ function animateRadar(){ const s=document.getElementById('radarShape'); if(s) re
 function grab(){ const e=document.getElementById('em'); if(e && e.value && e.value.includes('@')){ track('email',{email:e.value}); e.parentElement.innerHTML='<div style="color:#fff;font-size:14px;padding:8px">Thanks — your read-out is on the way. ✓</div>'; } else if(e){ e.style.outline='2px solid #E5B53D'; } }
 function restart(){ cur=0; answers.fill(null); route(); }
 
+// Fire 'started' only when a real human clicks Start (bots that just fetch the page do nothing → no quota burn, no false "opens")
+function startQuiz(){ if(!window._started){ window._started=true; track('started'); } next(); }
 intro();
-track('open');
 </script>
 </body>
 </html>
